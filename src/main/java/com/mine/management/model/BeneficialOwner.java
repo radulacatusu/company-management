@@ -21,7 +21,8 @@ public class BeneficialOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

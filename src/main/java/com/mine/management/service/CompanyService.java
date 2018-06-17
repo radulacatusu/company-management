@@ -6,6 +6,7 @@ import com.mine.management.model.Company;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  *
@@ -16,7 +17,7 @@ public interface CompanyService {
      * @param company
      * @return
      */
-    BaseResult<?> saveCompany(Company company);
+    BaseResult<?> save(Company company);
 
     /**
      * @return
@@ -31,15 +32,16 @@ public interface CompanyService {
 
     /**
      * @param company
+     * @param id
      * @return
      */
-    boolean updateCompany(Company company);
+    BaseResult<?> update(long id, Company company);
 
     /**
      * @param boList
      * @param companyId
      * @return
      */
-    Company addBeneficialOwners(List<BeneficialOwner> boList, long companyId);
+    BaseResult<?> addBeneficialOwners(Set<BeneficialOwner> boList, long companyId);
 
 }
