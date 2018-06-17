@@ -95,6 +95,9 @@ public class CompanyServiceImpl implements CompanyService {
         BaseResult<Company> result = new BaseResult<>();
         Optional<Company> current = companyRepository.findById(companyId);
         if (current.isPresent()) {
+            for(BeneficialOwner bo : boList){
+                bo.setCompany(current.get());
+            }
             current.get().getBeneficialOwners().addAll(boList);
             companyRepository.save(current.get());
             result.setResult(current.get());
