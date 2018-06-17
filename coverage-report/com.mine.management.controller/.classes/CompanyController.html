@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CompanyController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.mine.management.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CompanyController (com.mine.management.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompanyController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (25/ 25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.mine.management.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.mine.management.BaseResult;
+<i>4</i>&nbsp;import com.mine.management.model.BeneficialOwner;
+<i>5</i>&nbsp;import com.mine.management.model.Company;
+<i>6</i>&nbsp;import com.mine.management.service.CompanyService;
+<i>7</i>&nbsp;import com.mine.management.utils.BeneficialOwnerConversion;
+<i>8</i>&nbsp;import com.mine.management.utils.CompanyConversion;
+<i>9</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>10</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>11</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>12</i>&nbsp;import org.springframework.util.CollectionUtils;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.*;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import javax.validation.Valid;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;import java.util.Optional;
+<i>18</i>&nbsp;import java.util.Set;
+<i>19</i>&nbsp;import java.util.stream.Collectors;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;/**
+<i>22</i>&nbsp; * Controller used to manage company
+<i>23</i>&nbsp; */
+<i>24</i>&nbsp;@RestController
+<b class="fc"><i>25</i>&nbsp;public class CompanyController {</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    @Autowired
+<i>28</i>&nbsp;    private CompanyService companyService;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Autowired
+<i>31</i>&nbsp;    private CompanyConversion companyConversion;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Autowired
+<i>34</i>&nbsp;    private BeneficialOwnerConversion beneficialOwnerConversion;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @PostMapping(value = &quot;companies&quot;)
+<i>37</i>&nbsp;    public ResponseEntity&lt;?&gt; createNewCompany(@Valid @RequestBody com.mine.management.api.model.Company company) {
+<b class="fc"><i>38</i>&nbsp;        Company newCompany = companyConversion.getCompanyModel(company);</b>
+<b class="fc"><i>39</i>&nbsp;        BaseResult&lt;?&gt; result = companyService.save(newCompany);</b>
+<b class="fc"><i>40</i>&nbsp;        if (!result.isSuccess()) {</b>
+<b class="fc"><i>41</i>&nbsp;            return new ResponseEntity&lt;&gt;(result.getErrors(), HttpStatus.CONFLICT);</b>
+<i>42</i>&nbsp;        }
+<b class="fc"><i>43</i>&nbsp;        return new ResponseEntity&lt;&gt;(companyConversion.getCompanyApiModel((Company) result.getResult()), HttpStatus.CREATED);</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * @return
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    @GetMapping(&quot;/companies/{id}&quot;)
+<i>50</i>&nbsp;    public ResponseEntity&lt;?&gt; getCompany(@PathVariable long id) {
+<b class="fc"><i>51</i>&nbsp;        Optional&lt;Company&gt; company = companyService.findOne(id);</b>
+<b class="fc"><i>52</i>&nbsp;        if (company.isPresent()) {</b>
+<b class="fc"><i>53</i>&nbsp;            return new ResponseEntity&lt;&gt;(companyConversion.getCompanyApiModel(company.get()), HttpStatus.OK);</b>
+<i>54</i>&nbsp;        }
+<b class="fc"><i>55</i>&nbsp;        return new ResponseEntity&lt;&gt;(&quot;Company with id &quot; + id + &quot; not found.&quot;, HttpStatus.NOT_FOUND);</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /**
+<i>59</i>&nbsp;     * @return
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    @GetMapping(&quot;/companies&quot;)
+<i>62</i>&nbsp;    public ResponseEntity&lt;?&gt; getAllCompanies() {
+<b class="fc"><i>63</i>&nbsp;        List&lt;Company&gt; all = companyService.findAll();</b>
+<b class="fc"><i>64</i>&nbsp;        return new ResponseEntity&lt;&gt;(all.stream().map(companyConversion::getCompanyApiModel)</b>
+<b class="fc"><i>65</i>&nbsp;                .collect(Collectors.toList()), HttpStatus.OK);</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    @PutMapping(&quot;/companies/{id}&quot;)
+<i>69</i>&nbsp;    public ResponseEntity updateCompany(@PathVariable Long id,
+<i>70</i>&nbsp;                                        @Valid @RequestBody com.mine.management.api.model.Company company) {
+<i>71</i>&nbsp;
+<b class="fc"><i>72</i>&nbsp;        Company companyToUpdate = companyConversion.getCompanyModel(company);</b>
+<b class="fc"><i>73</i>&nbsp;        if (!CollectionUtils.isEmpty(companyToUpdate.getBeneficialOwners())) {</b>
+<b class="fc"><i>74</i>&nbsp;            return new ResponseEntity(&quot;Company can not be updated with beneficial owners. Please remove them.&quot;, HttpStatus.BAD_REQUEST);</b>
+<i>75</i>&nbsp;        }
+<b class="fc"><i>76</i>&nbsp;        BaseResult&lt;?&gt; result = companyService.update(id, companyToUpdate);</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        if (!result.isSuccess()) {</b>
+<b class="fc"><i>79</i>&nbsp;            return new ResponseEntity(result.getErrors(), HttpStatus.NOT_FOUND);</b>
+<i>80</i>&nbsp;        }
+<b class="fc"><i>81</i>&nbsp;        return new ResponseEntity(companyConversion.getCompanyApiModel((Company) result.getResult()), HttpStatus.OK);</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;    @PostMapping(value = &quot;companies/{id}/owner&quot;)
+<i>84</i>&nbsp;    public ResponseEntity&lt;?&gt; addBeneficialOwners(@PathVariable Long id,
+<i>85</i>&nbsp;                                                 @Valid @RequestBody List&lt;com.mine.management.api.model.BeneficialOwner&gt; owners) {
+<b class="fc"><i>86</i>&nbsp;        Set&lt;BeneficialOwner&gt; newBos = owners.stream().map(beneficialOwnerConversion::getCompanyModel).collect(Collectors.toSet());</b>
+<b class="fc"><i>87</i>&nbsp;        BaseResult&lt;?&gt; result = companyService.addBeneficialOwners(newBos, id);</b>
+<b class="fc"><i>88</i>&nbsp;        if (!result.isSuccess()) {</b>
+<b class="fc"><i>89</i>&nbsp;            return new ResponseEntity&lt;&gt;(result.getErrors(), HttpStatus.CONFLICT);</b>
+<i>90</i>&nbsp;        }
+<b class="fc"><i>91</i>&nbsp;        return new ResponseEntity&lt;&gt;(companyConversion.getCompanyApiModel((Company) result.getResult()), HttpStatus.OK);</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-06-17 23:38</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CompanyService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.mine.management.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CompanyService (com.mine.management.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CompanyService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.mine.management.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.mine.management.BaseResult;
+<i>4</i>&nbsp;import com.mine.management.model.BeneficialOwner;
+<i>5</i>&nbsp;import com.mine.management.model.Company;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;import java.util.Optional;
+<i>9</i>&nbsp;import java.util.Set;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; *
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public interface CompanyService {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * @param company
+<i>18</i>&nbsp;     * @return
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    BaseResult&lt;?&gt; save(Company company);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * @return
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    List&lt;Company&gt; findAll();
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * @param id
+<i>29</i>&nbsp;     * @return
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    Optional&lt;Company&gt; findOne(long id);
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * @param company
+<i>35</i>&nbsp;     * @param id
+<i>36</i>&nbsp;     * @return
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    BaseResult&lt;?&gt; update(long id, Company company);
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * @param boList
+<i>42</i>&nbsp;     * @param companyId
+<i>43</i>&nbsp;     * @return
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    BaseResult&lt;?&gt; addBeneficialOwners(Set&lt;BeneficialOwner&gt; boList, long companyId);
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-06-17 23:38</div>
+</div>
+</body>
+</html>

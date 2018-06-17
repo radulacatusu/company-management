@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CompanyServiceImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.mine.management.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CompanyServiceImpl (com.mine.management.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompanyServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/ 40)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CompanyServiceImpl$$EnhancerBySpringCGLIB$$98425be8</td>
+  </tr>
+  <tr>
+    <td class="name">CompanyServiceImpl$$EnhancerBySpringCGLIB$$98425be8$$FastClassBySpringCGLIB$$f95acde8</td>
+  </tr>
+  <tr>
+    <td class="name">CompanyServiceImpl$$FastClassBySpringCGLIB$$b0e5076e</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/ 40)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.mine.management.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.mine.management.BaseResult;
+<i>4</i>&nbsp;import com.mine.management.model.BeneficialOwner;
+<i>5</i>&nbsp;import com.mine.management.model.Company;
+<i>6</i>&nbsp;import com.mine.management.repository.BeneficialOwnerRepository;
+<i>7</i>&nbsp;import com.mine.management.repository.CompanyRepository;
+<i>8</i>&nbsp;import com.mine.management.utils.CompanyUtils;
+<i>9</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>10</i>&nbsp;import org.springframework.stereotype.Service;
+<i>11</i>&nbsp;import org.springframework.util.CollectionUtils;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import javax.transaction.Transactional;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.Optional;
+<i>16</i>&nbsp;import java.util.Set;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;@Service
+<i>19</i>&nbsp;@Transactional
+<b class="fc"><i>20</i>&nbsp;public class CompanyServiceImpl implements CompanyService {</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @Autowired
+<i>23</i>&nbsp;    private CompanyRepository companyRepository;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Autowired
+<i>26</i>&nbsp;    private BeneficialOwnerRepository beneficialOwnerRepository;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Autowired
+<i>29</i>&nbsp;    private CompanyUtils companyUtils;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @Override
+<i>32</i>&nbsp;    public BaseResult&lt;?&gt; save(Company company) {
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;        if (!CollectionUtils.isEmpty(company.getBeneficialOwners())) {</b>
+<b class="fc"><i>35</i>&nbsp;            BaseResult&lt;?&gt; existsOwnersResult = validateIfBeneficialOwnersExists(company.getBeneficialOwners());</b>
+<b class="fc"><i>36</i>&nbsp;            if (existsOwnersResult != null) return existsOwnersResult;</b>
+<i>37</i>&nbsp;        }
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        BaseResult&lt;Company&gt; result = new BaseResult&lt;&gt;();</b>
+<b class="fc"><i>40</i>&nbsp;        Optional&lt;Company&gt; existingCompany = companyRepository.findByName(company.getName());</b>
+<b class="fc"><i>41</i>&nbsp;        if (!existingCompany.isPresent()) {</b>
+<b class="fc"><i>42</i>&nbsp;            existingCompany = Optional.of(companyRepository.saveAndFlush(company));</b>
+<i>43</i>&nbsp;        } else {
+<b class="fc"><i>44</i>&nbsp;            result.addError(&quot;Company already exits&quot;);</b>
+<i>45</i>&nbsp;        }
+<b class="fc"><i>46</i>&nbsp;        result.setResult(existingCompany.get());</b>
+<b class="fc"><i>47</i>&nbsp;        return result;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    private BaseResult&lt;?&gt; validateIfBeneficialOwnersExists(Set&lt;BeneficialOwner&gt; bos) {
+<b class="fc"><i>51</i>&nbsp;        for (BeneficialOwner bo : bos) {</b>
+<b class="fc"><i>52</i>&nbsp;            Optional&lt;BeneficialOwner&gt; existingOwner = beneficialOwnerRepository.findByName(bo.getName());</b>
+<b class="fc"><i>53</i>&nbsp;            if (existingOwner.isPresent()) {</b>
+<b class="fc"><i>54</i>&nbsp;                BaseResult&lt;BeneficialOwner&gt; result = new BaseResult&lt;&gt;();</b>
+<b class="fc"><i>55</i>&nbsp;                result.addError(&quot;Beneficial owner already exits and it is assigned to a company.&quot;);</b>
+<b class="fc"><i>56</i>&nbsp;                result.setResult(existingOwner.get());</b>
+<b class="fc"><i>57</i>&nbsp;                return result;</b>
+<i>58</i>&nbsp;            }
+<b class="fc"><i>59</i>&nbsp;        }</b>
+<b class="fc"><i>60</i>&nbsp;        return null;</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    @Override
+<i>64</i>&nbsp;    public List&lt;Company&gt; findAll() {
+<b class="fc"><i>65</i>&nbsp;        return companyRepository.findAll();</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    @Override
+<i>69</i>&nbsp;    public Optional&lt;Company&gt; findOne(long id) {
+<b class="fc"><i>70</i>&nbsp;        return companyRepository.findById(id);</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public BaseResult&lt;?&gt; update(long id, Company update) {
+<b class="fc"><i>75</i>&nbsp;        BaseResult&lt;Company&gt; result = new BaseResult&lt;&gt;();</b>
+<i>76</i>&nbsp;
+<b class="fc"><i>77</i>&nbsp;        Optional&lt;Company&gt; current = companyRepository.findById(id);</b>
+<b class="fc"><i>78</i>&nbsp;        if (current.isPresent()) {</b>
+<b class="fc"><i>79</i>&nbsp;            companyUtils.applyUpdate(current.get(), update);</b>
+<b class="fc"><i>80</i>&nbsp;            companyRepository.save(current.get());</b>
+<b class="fc"><i>81</i>&nbsp;            result.setResult(current.get());</b>
+<i>82</i>&nbsp;        } else {
+<b class="fc"><i>83</i>&nbsp;            result.addError(&quot;Company does not exist.&quot;);</b>
+<i>84</i>&nbsp;        }
+<i>85</i>&nbsp;
+<b class="fc"><i>86</i>&nbsp;        return result;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    public BaseResult&lt;?&gt; addBeneficialOwners(Set&lt;BeneficialOwner&gt; boList, long companyId) {
+<i>91</i>&nbsp;
+<b class="fc"><i>92</i>&nbsp;        BaseResult&lt;?&gt; existsOwnersResult = validateIfBeneficialOwnersExists(boList);</b>
+<b class="fc"><i>93</i>&nbsp;        if (existsOwnersResult != null) return existsOwnersResult;</b>
+<i>94</i>&nbsp;
+<b class="fc"><i>95</i>&nbsp;        BaseResult&lt;Company&gt; result = new BaseResult&lt;&gt;();</b>
+<b class="fc"><i>96</i>&nbsp;        Optional&lt;Company&gt; current = companyRepository.findById(companyId);</b>
+<b class="fc"><i>97</i>&nbsp;        if (current.isPresent()) {</b>
+<b class="fc"><i>98</i>&nbsp;            current.get().getBeneficialOwners().addAll(boList);</b>
+<b class="fc"><i>99</i>&nbsp;            companyRepository.save(current.get());</b>
+<b class="fc"><i>100</i>&nbsp;            result.setResult(current.get());</b>
+<i>101</i>&nbsp;        } else {
+<b class="fc"><i>102</i>&nbsp;            result.addError(&quot;Company does not exits.&quot;);</b>
+<i>103</i>&nbsp;        }
+<b class="fc"><i>104</i>&nbsp;        return result;</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-06-17 23:38</div>
+</div>
+</body>
+</html>

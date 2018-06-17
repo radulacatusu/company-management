@@ -80,7 +80,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyRepository.save(current.get());
             result.setResult(current.get());
         } else {
-            result.addError("Company does not exits.");
+            result.addError("Company does not exist.");
         }
 
         return result;
