@@ -6,15 +6,25 @@ import javax.persistence.*;
  * Table used to store beneficial owners
  */
 @Entity
-@Table(name = "BENEFICIAL_OWNER")
+@Table(name = "BENEFICIAL_OWNER",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"NAME"})})
 public class BeneficialOwner {
+
+    public BeneficialOwner() {
+    }
+
+    public BeneficialOwner(String name, Company company) {
+        this.name = name;
+        this.company = company;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
@@ -47,7 +57,6 @@ public class BeneficialOwner {
         return "BeneficialOwner{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", company=" + company +
                 '}';
     }
 }

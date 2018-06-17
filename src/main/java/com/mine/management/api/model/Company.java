@@ -1,27 +1,24 @@
-package com.mine.management.model;
+package com.mine.management.api.model;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"NAME"})})
+/**
+ * Company API model
+ */
 public class Company {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "COMPANY_ID")
     private long id;
-
+    @NotNull
     private String name;
+    @NotNull
     private String address;
+    @NotNull
     private String city;
+    @NotNull
     private String country;
     private String email;
-
-    @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-
-    @OneToMany(mappedBy = "company",  cascade = CascadeType.ALL)
     private Set<BeneficialOwner> beneficialOwners;
 
     public long getId() {
@@ -98,6 +95,7 @@ public class Company {
                 ", country='" + country + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", beneficialOwners=" + beneficialOwners +
                 '}';
     }
 }
