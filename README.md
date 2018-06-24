@@ -86,7 +86,10 @@ Message: "Beneficial owner already exits and it is assigned to a company."
 
 ```
 GET - http://localhost:8080/companies/1 or http://34.209.73.115:8080/companies/1
-'curl http://34.209.73.115:8080/companies/1'
+```
+or 
+```
+Widnows: curl http://34.209.73.115:8080/companies/1
 ```
 Response: 200 OK
 ```
@@ -117,7 +120,10 @@ Message: "Company with id *** not found."
 
 ```
 GET - http://localhost:8080/companies or http://34.209.73.115:8080/companies
-'curl http://34.209.73.115:8080/companies'
+```
+or
+```
+Windows: curl http://34.209.73.115:8080/companies
 ```
 Response: 200 OK
 ```
