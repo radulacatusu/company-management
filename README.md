@@ -26,7 +26,7 @@ Run using maven goal: `mvn test`
 
 ## To manually test the application
 
-I used POSTMAN to test the application. Later today I will add documentation how to test with cURL.
+I used POSTMAN and cURL to test the application. 
 
 ### Create new company
 
@@ -41,6 +41,10 @@ POST - http://localhost:8080/companies or http://34.209.73.115:8080/companies
     "email": "a@a.com", 
     "beneficialOwners": [{"name": "NewOwnerInTown"}]
 }
+```
+or 
+```
+Windows: curl -i -X POST -H "Content-Type:application/json" http://34.209.73.115:8080/companies/ -d "{"""name""":"""NewCompanyInBucharest""","""address""":"""Bucharest""","""city""":"""Bucharest""","""country""":"""Romania""","""phoneNumber""":"""1234""","""email""":"""a@a.com""","""beneficialOwners""":[{"""name""":"""NewOwnerInBucharest"""}]}"
 ```
 Response: 200 OK
 ```
@@ -60,6 +64,11 @@ Response: 200 OK
     ]
 }
 ```
+Create company without mandatory fields
+```
+Windows: curl -i -X POST -H "Content-Type:application/json" http://34.209.73.115:8080/companies/ -d "{"""name""":"""NewCompanyInBucharest"""}"
+```
+Response: 400 BAD REQUEST
 
 If a company with the same name already exists:
 ```
@@ -77,6 +86,7 @@ Message: "Beneficial owner already exits and it is assigned to a company."
 
 ```
 GET - http://localhost:8080/companies/1 or http://34.209.73.115:8080/companies/1
+'curl http://34.209.73.115:8080/companies/1'
 ```
 Response: 200 OK
 ```
@@ -107,6 +117,7 @@ Message: "Company with id *** not found."
 
 ```
 GET - http://localhost:8080/companies or http://34.209.73.115:8080/companies
+'curl http://34.209.73.115:8080/companies'
 ```
 Response: 200 OK
 ```
@@ -152,6 +163,11 @@ PUT - http://localhost:8080/companies/1 or http://34.209.73.115:8080/companies/1
     "email": "a@a.com"
 }
 ```
+or 
+```
+Windows: curl -i -X PUT -H "Content-Type:application/json" http://34.209.73.115:8080/companies/1 -d "{"""name""":"""NewCompanyInLondon""","""address""":"""New AddressLondon""","""city""":"""London""","""country""":"""England""","""phoneNumber""":"""123""","""email""":"""a@a.com"""}"
+```
+
 Response: 200 OK
 ```
 {
@@ -179,6 +195,10 @@ POST - http://localhost:8080/companies/1/owner or http://34.209.73.115:8080/comp
 [{
     "name": "SecondOwner"
 }]
+```
+or 
+```
+Windows: curl -i -X POST -H "Content-Type:application/json" http://34.209.73.115:8080/companies/1/owner -d "[{"""name""":"""NewSecondOwner"""}]"
 ```
 Response: 200 OK
 ```
